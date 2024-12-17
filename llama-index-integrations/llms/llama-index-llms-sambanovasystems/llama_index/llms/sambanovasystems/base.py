@@ -64,52 +64,79 @@ def _create_message_dicts(messages: Sequence[ChatMessage]) -> List[Dict[str, Any
 
 class SambaNovaCloud(LLM):
     """
-    SambaNova Cloud model.
+    SambaNova Cloud models.
 
     Setup:
         To use, you should have the environment variables:
-        ``SAMBANOVA_URL`` set with your SambaNova Cloud URL.
-        ``SAMBANOVA_API_KEY`` set with your SambaNova Cloud API Key.
-        http://cloud.sambanova.ai/
+        `SAMBANOVA_URL` set with your SambaNova Cloud URL.
+        `SAMBANOVA_API_KEY` set with your SambaNova Cloud API Key.
+        http://cloud.sambanova.ai/.
 
-    Example:
-        .. code-block:: python
-            SambaNovaCloud(
-                sambanova_url = SambaNova cloud endpoint URL,
-                sambanova_api_key = set with your SambaNova cloud API key,
-                model = model name,
-                max_tokens = max number of tokens to generate,
-                temperature = model temperature,
-                top_p = model top p,
-                top_k = model top k,
-                stream_options = include usage to get generation metrics
-            )
+        Additionally, download the following packages:
+
+        `pip install llama-index-llms-sambanovasystems`
+
+        `pip install sseclient-py`
+
+
+    Examples:
+
+    ```python
+    SambaNovaCloud(
+        sambanova_url = SambaNova cloud endpoint URL,
+        sambanova_api_key = set with your SambaNova cloud API key,
+        model = model name,
+        max_tokens = max number of tokens to generate,
+        temperature = model temperature,
+        top_p = model top p,
+        top_k = model top k,
+        stream_options = include usage to get generation metrics
+    )
+    ```
 
     Key init args — completion params:
+
         model: str
+
             The name of the model to use, e.g., Meta-Llama-3-70B-Instruct.
+
         streaming: bool
+
             Whether to use streaming handler when using non streaming methods
+
         max_tokens: int
+
             max tokens to generate
+
         temperature: float
+
             model temperature
+
         top_p: float
+
             model top p
+
         top_k: int
+
             model top k
+
         stream_options: dict
+
             stream options, include usage to get generation metrics
 
     Key init args — client params:
+
         sambanova_url: str
+
             SambaNova Cloud Url
+
         sambanova_api_key: str
+
             SambaNova Cloud api key
 
-    Instantiate:
-        .. code-block:: python
 
+    Instantiate:
+            ```python
             from llama_index.llms.sambanovacloud import SambaNovaCloud
 
             llm = SambaNovaCloud(
@@ -123,21 +150,23 @@ class SambaNovaCloud(LLM):
                 stream_options = include usage to get generation metrics
                 context_window = model context window
             )
+            ```
     Complete:
-        .. code-block:: python
+            ```python
             prompt = "Tell me about Naruto Uzumaki in one sentence"
             response = llm.complete(prompt)
-
+            ```
     Chat:
-        .. code-block:: python
+            ```python
             messages = [
                 ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
                 ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
             ]
             response = llm.chat(messages)
+            ```
 
     Stream:
-        .. code-block:: python
+        ```python
         prompt = "Tell me about Naruto Uzumaki in one sentence"
         messages = [
             ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
@@ -147,9 +176,10 @@ class SambaNovaCloud(LLM):
             print(chunk.text)
         for chunk in llm.stream_chat(messages):
             print(chunk.message.content)
+        ```
 
     Async:
-        .. code-block:: python
+        ```python
         prompt = "Tell me about Naruto Uzumaki in one sentence"
         asyncio.run(llm.acomplete(prompt))
 
@@ -158,16 +188,17 @@ class SambaNovaCloud(LLM):
             ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
         ]
         asyncio.run(llm.achat(chat_text_msgs))
+        ```
 
     Response metadata and usage
-        .. code-block:: python
-
+        ```python
         messages = [
             ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
             ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
         ]
         metadata_and_usage = llm.chat(messages).message.additional_kwargs
         print(metadata_and_usage)
+        ```
     """
 
     model_config = ConfigDict(
@@ -656,8 +687,9 @@ class SambaStudio(LLM):
         ``SAMBASTUDIO_URL`` set with your SambaStudio deployed endpoint URL.
         ``SAMBASTUDIO_API_KEY`` set with your SambaStudio deployed endpoint Key.
         https://docs.sambanova.ai/sambastudio/latest/index.html
-        Example:
-        .. code-block:: python
+
+        Examples:
+            ```python
             SambaStudio(
                 sambastudio_url = set with your SambaStudio deployed endpoint URL,
                 sambastudio_api_key = set with your SambaStudio deployed endpoint Key.
@@ -676,80 +708,110 @@ class SambaStudio(LLM):
                      set to false or for StandAlone v1 and v2 endpoints)
                 model_kwargs: Optional = Extra Key word arguments to pass to the model.
             )
+            ```
 
     Key init args — completion params:
+
         model: str
+
             The name of the model to use, e.g., Meta-Llama-3-70B-Instruct-4096
             (set for CoE endpoints).
+
         streaming: bool
+
             Whether to use streaming
+
         max_tokens: inthandler when using non streaming methods
+
             max tokens to generate
+
         context_window: int
+
             model context window
+
         temperature: float
+
             model temperature
+
         top_p: float
+
             model top p
+
         top_k: int
+
             model top k
+
         do_sample: bool
+
             whether to do sample
+
         process_prompt:
+
             whether to process prompt (set for CoE generic v1 and v2 endpoints)
+
         stream_options: dict
+
             stream options, include usage to get generation metrics
+
         special_tokens: dict
+
             start, start_role, end_role and end special tokens
             (set for CoE generic v1 and v2 endpoints when process prompt set to false
              or for StandAlone v1 and v2 endpoints) default to llama3 special tokens
+
         model_kwargs: dict
             Extra Key word arguments to pass to the model.
 
     Key init args — client params:
+
         sambastudio_url: str
-            SambaStudio endpoint Url
+
+            SambaStudio endpoint URL
+
         sambastudio_api_key: str
+
             SambaStudio endpoint api key
 
+
     Instantiate:
-        .. code-block:: python
 
-            from llama_index.llms.sambanova import SambaStudio
+        ```python
+        from llama_index.llms.sambanova import SambaStudio
 
-            llm = SambaStudio=(
-                sambastudio_url = set with your SambaStudio deployed endpoint URL,
-                sambastudio_api_key = set with your SambaStudio deployed endpoint Key.
-                model = model or expert name (set for CoE endpoints),
-                max_tokens = max number of tokens to generate,
-                temperature = model temperature,
-                context_window = model context window,
-                top_p = model top p,
-                top_k = model top k,
-                do_sample = whether to do sample
-                process_prompt = whether to process prompt
-                    (set for CoE generic v1 and v2 endpoints)
-                stream_options = include usage to get generation metrics
-                special_tokens = start, start_role, end_role, and special tokens
-                    (set for CoE generic v1 and v2 endpoints when process prompt
-                     set to false or for StandAlone v1 and v2 endpoints)
-                model_kwargs: Optional = Extra Key word arguments to pass to the model.
-            )
+        llm = SambaStudio=(
+            sambastudio_url = set with your SambaStudio deployed endpoint URL,
+            sambastudio_api_key = set with your SambaStudio deployed endpoint Key.
+            model = model or expert name (set for CoE endpoints),
+            max_tokens = max number of tokens to generate,
+            temperature = model temperature,
+            context_window = model context window,
+            top_p = model top p,
+            top_k = model top k,
+            do_sample = whether to do sample
+            process_prompt = whether to process prompt
+                (set for CoE generic v1 and v2 endpoints)
+            stream_options = include usage to get generation metrics
+            special_tokens = start, start_role, end_role, and special tokens
+                (set for CoE generic v1 and v2 endpoints when process prompt
+                 set to false or for StandAlone v1 and v2 endpoints)
+            model_kwargs: Optional = Extra Key word arguments to pass to the model.
+        )
+        ```
     Complete:
-        .. code-block:: python
-            prompt = "Tell me about Naruto Uzumaki in one sentence"
-            response = llm.complete(prompt)
-
+        ```python
+        prompt = "Tell me about Naruto Uzumaki in one sentence"
+        response = llm.complete(prompt)
+        ```
     Chat:
-        .. code-block:: python
-            messages = [
-                ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
-                ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
-            ]
-            response = llm.chat(messages)
-
+        ```python
+        messages = [
+            ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
+            ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
+        ]
+        response = llm.chat(messages)
+        ```
     Stream:
-        .. code-block:: python
+        ```python
         prompt = "Tell me about Naruto Uzumaki in one sentence"
         messages = [
             ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
@@ -759,9 +821,9 @@ class SambaStudio(LLM):
             print(chunk.text)
         for chunk in llm.stream_chat(messages):
             print(chunk.message.content)
-
+        ```
     Async:
-        .. code-block:: python
+        ```python
         prompt = "Tell me about Naruto Uzumaki in one sentence"
         asyncio.run(llm.acomplete(prompt))
 
@@ -770,16 +832,16 @@ class SambaStudio(LLM):
             ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
         ]
         asyncio.run(llm.achat(chat_text_msgs))
-
+        ```
     Response metadata and usage
-        .. code-block:: python
-
+        ```python
         messages = [
             ChatMessage(role=MessageRole.SYSTEM, content=("You're a helpful assistant")),
             ChatMessage(role=MessageRole.USER, content="Tell me about Naruto Uzumaki in one sentence")
         ]
         metadata_and_usage = llm.chat(messages).message.additional_kwargs
         print(metadata_and_usage)
+        ```
     """
 
     model_config = ConfigDict(
